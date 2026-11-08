@@ -1,0 +1,71 @@
+name: "UIEB"
+gpu_ids: [2]
+
+path:
+    log: "logs"
+    tb_logger: "tb_logger"
+    results: "results"
+    checkpoint: "checkpoint"
+    resume_state: /home/customer5/d_1EUVP/experiments/UIEB_251224_085448/checkpoint/I340000_E1215
+    #/home/customer5/d_1EUVP/experiments/UIEB_251224_085448/checkpoint/I340000_E1215
+    #/home/customer5/d_1LSUI/experiments/UIEB_251209_145606/checkpoint/I600000_E1113
+    #/home/customer5/d_1UIEB/experiments/UIEB_251208_090404/checkpoint/I550000_E4784
+datasets:
+    train:
+        name: "UIEB"
+        dataroot: "/home/customer5/datasets/EUVP_data_gyh"
+        resolution: 256
+        batch_size: 1
+        num_workers: 8
+        use_shuffle: true
+        data_len: -1
+    val:
+        name: "UIEB"
+        dataroot: "/home/customer5/datasets/EUVP_test_gyh_val"
+        resolution: 256
+        use_shuffle: true
+        data_len: -1
+model:
+    unet:
+        in_channel: 9
+        out_channel: 3
+        inner_channel: 48
+        norm_groups: 24
+        image_size: 256
+    diffusion:
+        image_size: 256
+        channels: 3
+        conditional: true
+    beta_schedule:
+        train:
+            schedule: linear
+            n_timestep: 2000
+            linear_start: 0.000001 #1e-6
+            linear_end: 0.01 #1e-2
+        val:
+            schedule: linear
+            n_timestep: 2000
+            linear_start: 0.000001 #1e-6
+            linear_end: 0.01 #1e-2
+diffusion:
+    image_size: 256
+    channels: 3
+    conditional: true
+
+train:
+    n_iter: 1000000
+    val_freq: 100 #1e4
+    save_checkpoint_freq: 10000 #1e4
+    print_freq: 100
+    optimizer:
+        type: "adam"
+        lr_stage1: 0.0001
+        lr_unet: 0.0001
+        min_lr_unet: 0.00008
+    ema_scheduler:
+        step_start_ema: 5000
+        update_ema_every: 1
+        ema_decay: 0.9999
+
+wandb:
+    project: "UIE"
