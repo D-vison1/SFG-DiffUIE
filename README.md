@@ -7,7 +7,7 @@ This is the repository for our paper. [Paper Link](https://doi.org/10.1016/j.pat
 Run `train.py` to start training.
 
 ## Test
-Set the checkpoint path in `config/underwater.json`. Run `test.py`.
+Set the checkpoint path in `config/config.yml`. Run `test.py`.
 
 ## Citation
 If you use the code in this repository for your work, please cite our paper:
